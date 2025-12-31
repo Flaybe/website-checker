@@ -1,1 +1,2 @@
-export { PulseMonitor } from './components/PulseMonitor';
+export { PulseMonitor as default } from './components/PulseMonitor';
+
