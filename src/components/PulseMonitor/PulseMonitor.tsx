@@ -8,9 +8,10 @@ interface PulseMonitorProps {
     customCard?: React.FC<{ data: PingResult }>;
     className?: string;
     onLastUpdated?: (timestamp: number) => void;
+    refreshTrigger?: number;
 }
 
-export default function PulseMonitor({ urls, interval, customCard, className, onLastUpdated }: PulseMonitorProps) {
+export default function PulseMonitor({ urls, interval, customCard, className, onLastUpdated, refreshTrigger }: PulseMonitorProps) {
     const [monitorData, setMonitorData] = useState<PingResult[]>([]);
 
     // Ensure interval is at least 1s
@@ -30,7 +31,7 @@ export default function PulseMonitor({ urls, interval, customCard, className, on
         fetchStatuses();
         const timer = setInterval(fetchStatuses, safeInterval);
         return () => clearInterval(timer);
-    }, [urls, safeInterval, onLastUpdated]);
+    }, [urls, safeInterval, onLastUpdated, refreshTrigger]);
     const StatusComponent = customCard || DefaultStatusCard;
 
     return (
