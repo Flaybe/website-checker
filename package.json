@@ -5,12 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && tsc -p tsconfig.app.json --declaration --emitDeclarationOnly --noEmit false --outDir dist",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "main": "./dist/api-checker.umd.cjs",
   "module": "./dist/api-checker.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/api-checker.js",
