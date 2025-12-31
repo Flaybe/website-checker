@@ -7,6 +7,26 @@ interface StatusCardProps {
 
 const DefaultStatusCard: React.FC<StatusCardProps> = ({ data }) => {
   const { url, status, latency } = data;
+  const divRef = React.useRef<HTMLAnchorElement>(null);
+  const [position, setPosition] = React.useState({ x: 0, y: 0 });
+  const [opacity, setOpacity] = React.useState(0);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!divRef.current) return;
+
+    const div = divRef.current;
+    const rect = div.getBoundingClientRect();
+
+    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
+
+  const handleMouseEnter = () => {
+    setOpacity(1);
+  };
+
+  const handleMouseLeave = () => {
+    setOpacity(0);
+  };
   
   let statusColor = 'bg-gray-500';
   let statusText = 'Unknown';
@@ -31,12 +51,30 @@ const DefaultStatusCard: React.FC<StatusCardProps> = ({ data }) => {
   const hostname = new URL(url).hostname;
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-lg p-4 flex items-center justify-between shadow-xl relative overflow-hidden group">
+    <a 
+      ref={divRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      href={url}
+      target="_blank" 
+      rel="noopener noreferrer"
+      className="bg-slate-900 border border-slate-800 hover:border-slate-600 transition-all cursor-pointer rounded-lg p-4 flex items-center justify-between shadow-xl relative overflow-hidden group"
+    >
+      {/* Mouse Glow Effect */}
+      <div 
+        className="pointer-events-none absolute -inset-px transition-opacity duration-300"
+        style={{
+          opacity,
+          background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(255, 255, 255, 0.06), transparent 40%)`
+        }}
+      />
+
       {/* Decorative "Rack" details */}
       <div className="absolute top-0 left-0 w-1 h-full bg-slate-800"></div>
       <div className="absolute top-0 right-0 w-1 h-full bg-slate-800"></div>
       
-      <div className="flex items-center gap-4 pl-3">
+      <div className="flex items-center gap-4 pl-3 relative z-10">
         {/* Status LED */}
         <div className="relative flex items-center justify-center w-4 h-4">
              {/* Glow Layer */}
@@ -46,7 +84,7 @@ const DefaultStatusCard: React.FC<StatusCardProps> = ({ data }) => {
         </div>
         
         <div className="flex flex-col">
-           <span className="text-gray-200 font-mono text-sm tracking-wide font-medium">
+           <span className="text-gray-200 font-mono text-sm tracking-wide font-medium group-hover:text-white transition-colors">
              {hostname}
            </span>
            <span className="text-xs text-slate-500 font-mono uppercase tracking-wider">
@@ -55,12 +93,12 @@ const DefaultStatusCard: React.FC<StatusCardProps> = ({ data }) => {
         </div>
       </div>
 
-      <div className="flex flex-col items-end pr-2">
+      <div className="flex flex-col items-end pr-2 relative z-10">
         <span className={`font-mono text-sm ${latency > 0 ? 'text-slate-400' : 'text-slate-600'}`}>
           {latency > 0 ? `${latency}ms` : '--'}
         </span>
       </div>
-    </div>
+    </a>
   );
 };
 
