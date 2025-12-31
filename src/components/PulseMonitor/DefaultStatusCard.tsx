@@ -1,11 +1,11 @@
 import React from 'react';
-import type { PingResult } from '../utils/Ping';
+import type { PingResult } from './Ping';
 
 interface StatusCardProps {
   data: PingResult;
 }
 
-const StatusCard: React.FC<StatusCardProps> = ({ data }) => {
+const DefaultStatusCard: React.FC<StatusCardProps> = ({ data }) => {
   const { url, status, latency, imgUrl } = data;
   
   let borderColor = 'border-gray-200';
@@ -50,4 +50,4 @@ const StatusCard: React.FC<StatusCardProps> = ({ data }) => {
   );
 };
 
-export default StatusCard;
+export default DefaultStatusCard;
