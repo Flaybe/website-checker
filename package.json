@@ -9,6 +9,14 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
+  "main": "./dist/api-checker.umd.cjs",
+  "module": "./dist/api-checker.js",
+  "exports": {
+    ".": {
+      "import": "./dist/api-checker.js",
+      "require": "./dist/api-checker.umd.cjs"
+    }
+  },
   "dependencies": {
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
