@@ -14,6 +14,7 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/api-checker.js",
       "require": "./dist/api-checker.umd.cjs"
     }
